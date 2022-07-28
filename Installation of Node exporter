@@ -1,0 +1,36 @@
+NODE EXPORTER, PROMOTHEUS AND GRAFANA:::::
+=======TO INSTALL NODE EXPORTER 
+IMPPPP Link to install Node exporter(https://medium.com/devops-dudes/install-prometheus-on-ubuntu-18-04-a51602c6256b)
+
+==connct to bastion
+==switch to root user
+==wget https://github.com/prometheus/node_exporter/releases/download/v0.15.2/node_exporter-0.15.2.linux-amd64.tar.gz(To install)
+==tar -xf node_exporter-0.15.2.linux-amd64.tar.gz(To extract downloaded file)
+==sudo mv node_exporter-0.15.2.linux-amd64/node_exporter /usr/local/bin(to change name and to move into binfolder)
+==sudo useradd -rs /bin/false node_exporter
+==sudo vi /etc/systemd/system/node_exporter.service
+==================================================
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+======================================================
+==sudo systemctl daemon-reload
+sudo systemctl enable node_exporter
+sudo systemctl start node_exporter
+==Allow 9100 in bastion sg or all traffic
+==Take public ip of bastion and add :9100 and check for node exporter(u will get node exporter)
+==Install node exporter in all the machines(that is bastion, app servers)
+
+==Install the node exporter in app1 by following the above process)
+=SAME FOR APP1 OR TOMCAT and allow 9100 in app1 sg and give (app1 public ip :9100) , check for node exporter
+==connect to jenkins switch to jenkins user in home directiry(/var/lib/jenkins
+==go to vi /etc/prometheus/prometheus.yml and add bastion and app1 private ip's in the targets
